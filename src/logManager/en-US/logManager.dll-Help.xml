@@ -1,0 +1,1117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<helpItems xmlns:maml="http://schemas.microsoft.com/maml/2004/10" xmlns:command="http://schemas.microsoft.com/maml/dev/command/2004/10" xmlns:dev="http://schemas.microsoft.com/maml/dev/2004/10" xmlns="http://msh" schema="maml">
+  <!-- Convert-TokenPath Cmdlet -->
+  <command:command>
+    <command:details>
+      <command:name>Convert-TokenPath</command:name>
+      <command:verb>Convert</command:verb>
+      <command:noun>TokenPath</command:noun>
+      <maml:description>
+        <maml:para>Converts token placeholders in a path to their actual values.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>The Convert-TokenPath cmdlet replaces token placeholders in a path string with their actual values. Supported tokens include {SERVER} (machine name), {YEAR}, {MONTH}, and {DAY} (date components). Tokens are case-insensitive and whitespace-tolerant.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Convert-TokenPath</maml:name>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="True (ByValue)" position="0">
+          <maml:name>Path</maml:name>
+          <maml:description>
+            <maml:para>The tokenized path to convert (e.g., '/{SERVER}/Logs/{YEAR}/')</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False" position="1">
+          <maml:name>Date</maml:name>
+          <maml:description>
+            <maml:para>Date in yyyyMMdd format (e.g., 20251018). Defaults to today's date if not specified.</maml:para>
+          </maml:description>
+          <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="True (ByValue)" position="0">
+        <maml:name>Path</maml:name>
+        <maml:description>
+          <maml:para>The tokenized path containing placeholders to be converted.</maml:para>
+          <maml:para>Supported tokens:</maml:para>
+          <maml:para>  {SERVER} - Machine name (e.g., "MYPC")</maml:para>
+          <maml:para>  {YEAR}   - Current year (e.g., "2025")</maml:para>
+          <maml:para>  {MONTH}  - Current month (e.g., "10")</maml:para>
+          <maml:para>  {DAY}    - Current day (e.g., "18")</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False" position="1">
+        <maml:name>Date</maml:name>
+        <maml:description>
+          <maml:para>Optional date for token conversion in yyyyMMdd format. If omitted, today's date is used. Must be a valid 8-digit date string.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>Path string with token placeholders.</maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>The converted path with all tokens replaced by their values.</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <command:examples>
+      <command:example>
+        <maml:title>Example 1: Convert path with all token types</maml:title>
+        <dev:code>
+PS C:\> Convert-TokenPath -Path "/{SERVER}/Logs/{YEAR}/{MONTH}/{DAY}"
+/MYPC/Logs/2025/10/18
+        </dev:code>
+        <dev:remarks>
+          <maml:para>Converts all supported tokens using today's date.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 2: Convert using a specific date</maml:title>
+        <dev:code>
+PS C:\> Convert-TokenPath -Path "archive/{YEAR}/{MONTH}" -Date "20250915"
+archive/2025/09
+        </dev:code>
+        <dev:remarks>
+          <maml:para>Converts tokens using the specified date (September 15, 2025).</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 3: Use in pipeline</maml:title>
+        <dev:code>
+PS C:\> "C:\logs\{YEAR}\{MONTH}" | Convert-TokenPath
+C:\logs\2025\10
+        </dev:code>
+        <dev:remarks>
+          <maml:para>Passes the path via pipeline.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <maml:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Get-LogFiles</maml:linkText>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Get-LogFolders</maml:linkText>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Compress-Logs</maml:linkText>
+      </maml:navigationLink>
+    </maml:relatedLinks>
+  </command:command>
+
+  <!-- Get-LogFiles Cmdlet -->
+  <command:command>
+    <command:details>
+      <command:name>Get-LogFiles</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>LogFiles</command:noun>
+      <maml:description>
+        <maml:para>Retrieves log files from a directory based on age criteria.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>The Get-LogFiles cmdlet retrieves file objects from a specified directory. It supports filtering by file age using creation time or modification time. You can retrieve files older than, younger than, or within a specific age range. Supports recursive directory searching with lazy enumeration for optimal performance with large directories.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-LogFiles</maml:name>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="True (ByValue)" position="0">
+          <maml:name>Path</maml:name>
+          <maml:description>
+            <maml:para>The directory path to search for log files.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+          <maml:name>OlderThan</maml:name>
+          <maml:description>
+            <maml:para>Files older than this number of days (inclusive).</maml:para>
+          </maml:description>
+          <command:parameterValue required="false" variableLength="false">Int32</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+          <maml:name>YoungerThan</maml:name>
+          <maml:description>
+            <maml:para>Files younger than this number of days (inclusive).</maml:para>
+          </maml:description>
+          <command:parameterValue required="false" variableLength="false">Int32</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+          <maml:name>DateType</maml:name>
+          <maml:description>
+            <maml:para>Date type to use for filtering. Valid values are 'CreatedOn' (default) or 'LastModified'.</maml:para>
+          </maml:description>
+          <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+          <maml:name>Recurse</maml:name>
+          <maml:description>
+            <maml:para>Search recursively in subdirectories.</maml:para>
+          </maml:description>
+          <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="True (ByValue)" position="0">
+        <maml:name>Path</maml:name>
+        <maml:description>
+          <maml:para>The directory path to search for log files. This parameter supports token conversion ({SERVER}, {YEAR}, {MONTH}, {DAY}).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+        <maml:name>OlderThan</maml:name>
+        <maml:description>
+          <maml:para>Retrieve files that are at least this many days old. For example, -OlderThan 30 returns files that are 30 or more days old.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">Int32</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+        <maml:name>YoungerThan</maml:name>
+        <maml:description>
+          <maml:para>Retrieve files that are at most this many days old. For example, -YoungerThan 7 returns files that are 7 or fewer days old.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">Int32</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+        <maml:name>DateType</maml:name>
+        <maml:description>
+          <maml:para>Specifies which date to use for age filtering: 'CreatedOn' (creation time) or 'LastModified' (modification time). Default is 'CreatedOn'.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+        <maml:name>Recurse</maml:name>
+        <maml:description>
+          <maml:para>If specified, searches recursively through all subdirectories. Without this switch, only the top-level directory is searched.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>Directory path.</maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.IO.FileInfo</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>FileInfo objects representing the matching files.</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <command:examples>
+      <command:example>
+        <maml:title>Example 1: Get all files from a directory</maml:title>
+        <dev:code>
+PS C:\> Get-LogFiles -Path "C:\logs"
+        </dev:code>
+        <dev:remarks>
+          <maml:para>Returns all files in C:\logs (top-level only).</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 2: Get files older than 30 days</maml:title>
+        <dev:code>
+PS C:\> Get-LogFiles -Path "C:\logs" -OlderThan 30 -Recurse
+        </dev:code>
+        <dev:remarks>
+          <maml:para>Returns all files in C:\logs and subdirectories that are 30 or more days old.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 3: Get files within a date range</maml:title>
+        <dev:code>
+PS C:\> Get-LogFiles -Path "C:\logs" -OlderThan 8 -YoungerThan 20 -Recurse
+        </dev:code>
+        <dev:remarks>
+          <maml:para>Returns files that are between 8 and 20 days old.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 4: Get files using modification time</maml:title>
+        <dev:code>
+PS C:\> Get-LogFiles -Path "C:\logs" -OlderThan 7 -DateType "LastModified"
+        </dev:code>
+        <dev:remarks>
+          <maml:para>Returns files modified more than 7 days ago, instead of created more than 7 days ago.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <maml:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Get-LogFolders</maml:linkText>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Group-LogFilesByDate</maml:linkText>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Compress-Logs</maml:linkText>
+      </maml:navigationLink>
+    </maml:relatedLinks>
+  </command:command>
+
+  <!-- Get-LogFolders Cmdlet -->
+  <command:command>
+    <command:details>
+      <command:name>Get-LogFolders</command:name>
+      <command:verb>Get</command:verb>
+      <command:noun>LogFolders</command:noun>
+      <maml:description>
+        <maml:para>Retrieves log folders from a directory based on name format and age criteria.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>The Get-LogFolders cmdlet retrieves DirectoryInfo objects for folders matching a date-based naming pattern. It supports folder names in yyyyMMdd or yyyy-MM-dd format and filters by folder age. This cmdlet is optimized for organizational structures where log folders are named by date.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Get-LogFolders</maml:name>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="True (ByValue)" position="0">
+          <maml:name>Path</maml:name>
+          <maml:description>
+            <maml:para>The directory path to search for log folders.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+          <maml:name>OlderThan</maml:name>
+          <maml:description>
+            <maml:para>Folders older than this number of days (inclusive).</maml:para>
+          </maml:description>
+          <command:parameterValue required="false" variableLength="false">Int32</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+          <maml:name>YoungerThan</maml:name>
+          <maml:description>
+            <maml:para>Folders younger than this number of days (inclusive).</maml:para>
+          </maml:description>
+          <command:parameterValue required="false" variableLength="false">Int32</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+          <maml:name>DateType</maml:name>
+          <maml:description>
+            <maml:para>Date type to use for filtering. Valid values are 'CreatedOn' (default) or 'LastModified'.</maml:para>
+          </maml:description>
+          <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="True (ByValue)" position="0">
+        <maml:name>Path</maml:name>
+        <maml:description>
+          <maml:para>The directory path to search for log folders. Only direct subdirectories are searched (not recursive).</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+        <maml:name>OlderThan</maml:name>
+        <maml:description>
+          <maml:para>Retrieve folders that are at least this many days old.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">Int32</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+        <maml:name>YoungerThan</maml:name>
+        <maml:description>
+          <maml:para>Retrieve folders that are at most this many days old.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">Int32</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+        <maml:name>DateType</maml:name>
+        <maml:description>
+          <maml:para>Specifies which date to use for age filtering: 'CreatedOn' (creation time) or 'LastModified' (modification time). Default is 'CreatedOn'.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>Directory path.</maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.IO.DirectoryInfo</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>DirectoryInfo objects representing matching folders with names in yyyyMMdd or yyyy-MM-dd format.</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <command:examples>
+      <command:example>
+        <maml:title>Example 1: Get all date-formatted folders</maml:title>
+        <dev:code>
+PS C:\> Get-LogFolders -Path "C:\logs"
+
+Name         : 20251018
+FullName     : C:\logs\20251018
+
+Name         : 20251017
+FullName     : C:\logs\20251017
+        </dev:code>
+        <dev:remarks>
+          <maml:para>Returns all folders with names in yyyyMMdd or yyyy-MM-dd format.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 2: Get old date-formatted folders</maml:title>
+        <dev:code>
+PS C:\> Get-LogFolders -Path "C:\logs" -OlderThan 30
+        </dev:code>
+        <dev:remarks>
+          <maml:para>Returns only folders that are 30 or more days old.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 3: Pipe to Compress-Logs</maml:title>
+        <dev:code>
+PS C:\> Get-LogFolders -Path "C:\logs" -OlderThan 7 | Compress-Logs -ArchivePath "C:\backup\old-logs-{YEAR}-{MONTH}.zip"
+        </dev:code>
+        <dev:remarks>
+          <maml:para>Compresses old log folders into an archive.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <maml:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Get-LogFiles</maml:linkText>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Compress-Logs</maml:linkText>
+      </maml:navigationLink>
+    </maml:relatedLinks>
+  </command:command>
+
+  <!-- Group-LogFilesByDate Cmdlet -->
+  <command:command>
+    <command:details>
+      <command:name>Group-LogFilesByDate</command:name>
+      <command:verb>Group</command:verb>
+      <command:noun>LogFilesByDate</command:noun>
+      <maml:description>
+        <maml:para>Groups log files by date into yyyyMMdd date groups.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>The Group-LogFilesByDate cmdlet accepts FileInfo objects (typically from Get-LogFiles) or a directory path and groups files by their date in yyyyMMdd format. It returns custom objects with DateGroup, Files array, and Count properties. Results are sorted by date in descending order (newest first). This cmdlet is designed to work in pipeline with Get-LogFiles and Compress-Logs.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Group-LogFilesByDate</maml:name>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="True (ByValue)" position="0">
+          <maml:name>InputObject</maml:name>
+          <maml:description>
+            <maml:para>FileInfo objects from Get-LogFiles pipeline.</maml:para>
+          </maml:description>
+          <command:parameterValue required="false" variableLength="false">FileInfo[]</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False" position="1">
+          <maml:name>Path</maml:name>
+          <maml:description>
+            <maml:para>Directory path to search for files (alternative to pipeline input).</maml:para>
+          </maml:description>
+          <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+          <maml:name>Recurse</maml:name>
+          <maml:description>
+            <maml:para>Search recursively in subdirectories.</maml:para>
+          </maml:description>
+          <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+          <maml:name>DateType</maml:name>
+          <maml:description>
+            <maml:para>Date type for grouping: 'CreatedOn' (default) or 'LastModified'.</maml:para>
+          </maml:description>
+          <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="True (ByValue)">
+        <maml:name>InputObject</maml:name>
+        <maml:description>
+          <maml:para>FileInfo objects to group, typically from Get-LogFiles cmdlet.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">FileInfo[]</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False" position="1">
+        <maml:name>Path</maml:name>
+        <maml:description>
+          <maml:para>Directory path to search for files. Use this parameter instead of pipeline input when you want to group files directly from a path.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+        <maml:name>Recurse</maml:name>
+        <maml:description>
+          <maml:para>When used with the -Path parameter, search recursively through subdirectories.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+        <maml:name>DateType</maml:name>
+        <maml:description>
+          <maml:para>Specifies which file date to use for grouping: 'CreatedOn' (creation time) or 'LastModified' (modification time). Default is 'CreatedOn'.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.IO.FileInfo</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>FileInfo objects, typically from Get-LogFiles.</maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>PSCustomObject</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>PSCustomObject with properties: DateGroup (yyyyMMdd format), Files (array of FileInfo), Count (number of files in group).</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <command:examples>
+      <command:example>
+        <maml:title>Example 1: Group files from pipeline</maml:title>
+        <dev:code>
+PS C:\> Get-LogFiles -Path "C:\logs" -Recurse | Group-LogFilesByDate | Format-List
+
+DateGroup : 20251018
+Files     : {C:\logs\file1.log, C:\logs\file2.log}
+Count     : 2
+
+DateGroup : 20251017
+Files     : {C:\logs\file3.log}
+Count     : 1
+        </dev:code>
+        <dev:remarks>
+          <maml:para>Groups all files by their creation date (yyyyMMdd format).</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 2: Group by last modification date</maml:title>
+        <dev:code>
+PS C:\> Get-LogFiles -Path "C:\logs" | Group-LogFilesByDate -DateType "LastModified"
+        </dev:code>
+        <dev:remarks>
+          <maml:para>Groups files by their modification date instead of creation date.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 3: Pipe to Compress-Logs for per-date archives</maml:title>
+        <dev:code>
+PS C:\> Get-LogFiles -Path "C:\logs" -OlderThan 7 | Group-LogFilesByDate | Compress-Logs -ArchivePath "C:\backup\{DateGroup}.zip"
+        </dev:code>
+        <dev:remarks>
+          <maml:para>Groups files by date and creates one archive per date group.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 4: Group with AppName parameter</maml:title>
+        <dev:code>
+PS C:\> Get-LogFiles -Path "C:\logs" | Group-LogFilesByDate | Compress-Logs -ArchivePath "C:\backup" -AppName "myapp"
+        </dev:code>
+        <dev:remarks>
+          <maml:para>Creates archives named myapp-20251018.zip, myapp-20251017.zip, etc.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <maml:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Get-LogFiles</maml:linkText>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Compress-Logs</maml:linkText>
+      </maml:navigationLink>
+    </maml:relatedLinks>
+  </command:command>
+
+  <!-- Compress-Logs Cmdlet -->
+  <command:command>
+    <command:details>
+      <command:name>Compress-Logs</command:name>
+      <command:verb>Compress</command:verb>
+      <command:noun>Logs</command:noun>
+      <maml:description>
+        <maml:para>Compresses files or folders to ZIP archives with token path support.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>The Compress-Logs cmdlet creates ZIP archives from FileInfo or DirectoryInfo objects (typically from Get-LogFiles or Get-LogFolders). It supports token-based path conversion and can create multiple archives from grouped input (from Group-LogFilesByDate). The cmdlet automatically creates output directories and uses the AppName parameter for grouped compression to generate filenames in the format APPNAME-yyyyMMdd.zip.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Compress-Logs</maml:name>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="True (ByValue)" position="0">
+          <maml:name>InputObject</maml:name>
+          <maml:description>
+            <maml:para>FileInfo or DirectoryInfo objects from Get-LogFiles/Get-LogFolders or grouped objects from Group-LogFilesByDate.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">PSObject[]</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="False" position="1">
+          <maml:name>ArchivePath</maml:name>
+          <maml:description>
+            <maml:para>Path for the ZIP archive (must end with .zip for single archive, or directory path with AppName). Supports token conversion.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+          <maml:name>AppName</maml:name>
+          <maml:description>
+            <maml:para>Application name for grouped archives (format: APPNAME-yyyyMMdd.zip).</maml:para>
+          </maml:description>
+          <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="True (ByValue)" position="0">
+        <maml:name>InputObject</maml:name>
+        <maml:description>
+          <maml:para>FileInfo, DirectoryInfo, or grouped objects to compress. Typically piped from Get-LogFiles, Get-LogFolders, or Group-LogFilesByDate.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">PSObject[]</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="False" position="1">
+        <maml:name>ArchivePath</maml:name>
+        <maml:description>
+          <maml:para>The destination path for the ZIP archive. For single archives, must include the filename and end with .zip. For grouped archives with AppName, this should be the directory path. Supports token conversion: {SERVER}, {YEAR}, {MONTH}, {DAY}, and {DateGroup}.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+        <maml:name>AppName</maml:name>
+        <maml:description>
+          <maml:para>Application name to use in archive filenames when compressing grouped input. Only applies to output from Group-LogFilesByDate. Generates filenames in format: APPNAME-yyyyMMdd.zip. If not specified with grouped input, uses {DateGroup} token in ArchivePath.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.Management.Automation.PSObject</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>FileInfo, DirectoryInfo, or custom grouped objects.</maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.IO.FileInfo</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>FileInfo object representing the created archive.</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <command:examples>
+      <command:example>
+        <maml:title>Example 1: Compress files from Get-LogFiles</maml:title>
+        <dev:code>
+PS C:\> Get-LogFiles -Path "C:\logs" -OlderThan 30 | Compress-Logs -ArchivePath "C:\backup\old-logs.zip"
+        </dev:code>
+        <dev:remarks>
+          <maml:para>Compresses all files older than 30 days into a single ZIP archive.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 2: Compress with date-based archive names</maml:title>
+        <dev:code>
+PS C:\> Get-LogFiles -Path "C:\logs" | Group-LogFilesByDate | Compress-Logs -ArchivePath "C:\backup\{DateGroup}.zip"
+        </dev:code>
+        <dev:remarks>
+          <maml:para>Creates one archive per date group: 20251018.zip, 20251017.zip, etc.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 3: Compress with AppName parameter</maml:title>
+        <dev:code>
+PS C:\> Get-LogFiles -Path "C:\logs" | Group-LogFilesByDate | Compress-Logs -ArchivePath "C:\backup" -AppName "myapp"
+        </dev:code>
+        <dev:remarks>
+          <maml:para>Creates archives named myapp-20251018.zip, myapp-20251017.zip, etc.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 4: Compress with token-based paths</maml:title>
+        <dev:code>
+PS C:\> Get-LogFiles -Path "C:\logs" | Compress-Logs -ArchivePath "C:\backup\{YEAR}\{MONTH}\logs-{SERVER}.zip"
+        </dev:code>
+        <dev:remarks>
+          <maml:para>Creates archive with date and server name tokens expanded: C:\backup\2025\10\logs-MYPC.zip</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <maml:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Get-LogFiles</maml:linkText>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Group-LogFilesByDate</maml:linkText>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Send-LogsToS3</maml:linkText>
+      </maml:navigationLink>
+    </maml:relatedLinks>
+  </command:command>
+
+  <!-- Send-LogsToS3 Cmdlet -->
+  <command:command>
+    <command:details>
+      <command:name>Send-LogsToS3</command:name>
+      <command:verb>Send</command:verb>
+      <command:noun>LogsToS3</command:noun>
+      <maml:description>
+        <maml:para>Sends log files to AWS S3 for long-term storage with integrity verification.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>The Send-LogsToS3 cmdlet uploads log files to AWS S3 buckets using the AWS CLI. It supports multiple authentication methods (EC2 IAM role, AWS profile, or access key/secret key), token-based S3 key prefix generation, and automatic integrity verification. Smaller files receive full verification (size + MD5), while larger files use size-only verification. Audit metadata is automatically stored with S3 objects.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Send-LogsToS3</maml:name>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="True (ByValue)" position="0">
+          <maml:name>InputFile</maml:name>
+          <maml:description>
+            <maml:para>FileInfo object to upload (typically from Compress-Logs).</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">FileInfo</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="False" position="1">
+          <maml:name>Bucket</maml:name>
+          <maml:description>
+            <maml:para>S3 bucket name.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False" position="2">
+          <maml:name>KeyPrefix</maml:name>
+          <maml:description>
+            <maml:para>S3 key prefix with optional tokens (e.g., 'archive/{YEAR}/{MONTH}/').</maml:para>
+          </maml:description>
+          <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+          <maml:name>Region</maml:name>
+          <maml:description>
+            <maml:para>AWS region (e.g., us-east-1). Uses default if not specified.</maml:para>
+          </maml:description>
+          <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+          <maml:name>ProfileName</maml:name>
+          <maml:description>
+            <maml:para>AWS profile name from ~/.aws/credentials.</maml:para>
+          </maml:description>
+          <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+          <maml:name>AccessKey</maml:name>
+          <maml:description>
+            <maml:para>AWS access key ID. Requires SecretKey if specified.</maml:para>
+          </maml:description>
+          <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+          <maml:name>SecretKey</maml:name>
+          <maml:description>
+            <maml:para>AWS secret access key. Requires AccessKey if specified.</maml:para>
+          </maml:description>
+          <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+          <maml:name>StorageClass</maml:name>
+          <maml:description>
+            <maml:para>S3 storage class (default: STANDARD). Valid values: STANDARD, REDUCED_REDUNDANCY, STANDARD_IA, ONEZONE_IA, INTELLIGENT_TIERING, GLACIER, DEEP_ARCHIVE, GLACIER_IR.</maml:para>
+          </maml:description>
+          <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+          <maml:name>SkipVerification</maml:name>
+          <maml:description>
+            <maml:para>Skip integrity verification (not recommended for important backups).</maml:para>
+          </maml:description>
+          <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+          <maml:name>Force</maml:name>
+          <maml:description>
+            <maml:para>Overwrite if S3 object already exists.</maml:para>
+          </maml:description>
+          <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+          <maml:name>PassThru</maml:name>
+          <maml:description>
+            <maml:para>Return S3UploadResult object with upload details.</maml:para>
+          </maml:description>
+          <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="True (ByValue)" position="0">
+        <maml:name>InputFile</maml:name>
+        <maml:description>
+          <maml:para>The FileInfo object to upload to S3. Typically piped from Compress-Logs or Send-LogsToS3 cmdlets.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">FileInfo</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="False" position="1">
+        <maml:name>Bucket</maml:name>
+        <maml:description>
+          <maml:para>The target S3 bucket name where the file will be uploaded.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False" position="2">
+        <maml:name>KeyPrefix</maml:name>
+        <maml:description>
+          <maml:para>The S3 key prefix for the uploaded object. Supports tokens: {SERVER}, {YEAR}, {MONTH}, {DAY}. Example: 'logs/{YEAR}/{MONTH}/' would create keys like 'logs/2025/10/file.zip'.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+        <maml:name>Region</maml:name>
+        <maml:description>
+          <maml:para>The AWS region for the S3 bucket (e.g., us-east-1, eu-west-1). If not specified, uses your default AWS region.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+        <maml:name>ProfileName</maml:name>
+        <maml:description>
+          <maml:para>AWS profile name from your ~/.aws/credentials file. Used for authentication. If not specified, uses the default profile.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+        <maml:name>AccessKey</maml:name>
+        <maml:description>
+          <maml:para>AWS access key ID for authentication. Must be paired with SecretKey. Use EC2 IAM role or AWS profile when possible for security.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+        <maml:name>SecretKey</maml:name>
+        <maml:description>
+          <maml:para>AWS secret access key. Required if AccessKey is specified. Use EC2 IAM role or AWS profile when possible for security.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+        <maml:name>StorageClass</maml:name>
+        <maml:description>
+          <maml:para>The S3 storage class for the uploaded object. Default is STANDARD. Other options include INTELLIGENT_TIERING (auto-optimizes between access tiers), GLACIER (long-term archival), and others. Affects cost and access speed.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+        <maml:name>SkipVerification</maml:name>
+        <maml:description>
+          <maml:para>If specified, skips integrity verification after upload. Not recommended for critical backups. Verification includes MD5 check for files under 1GB and size check for larger files.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+        <maml:name>Force</maml:name>
+        <maml:description>
+          <maml:para>If specified, overwrites the S3 object if it already exists. By default, will fail if the object already exists.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+        <maml:name>PassThru</maml:name>
+        <maml:description>
+          <maml:para>If specified, returns an S3UploadResult object with details about the upload (S3 URI, ETag, content length, upload duration). By default, returns the input FileInfo object.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">SwitchParameter</command:parameterValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.IO.FileInfo</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>FileInfo object representing the file to upload.</maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>System.IO.FileInfo</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>FileInfo object of the uploaded file (or S3UploadResult if -PassThru specified).</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <command:examples>
+      <command:example>
+        <maml:title>Example 1: Upload using EC2 IAM role</maml:title>
+        <dev:code>
+PS C:\> Get-LogFiles -Path "C:\logs" -OlderThan 30 |
+    Compress-Logs -ArchivePath "C:\temp\archive.zip" |
+    Send-LogsToS3 -Bucket "my-backup-bucket" -KeyPrefix "logs/{YEAR}/{MONTH}/" -Region "us-east-1"
+        </dev:code>
+        <dev:remarks>
+          <maml:para>Uploads compressed logs to S3 using EC2 IAM role for automatic authentication.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 2: Upload with explicit credentials</maml:title>
+        <dev:code>
+PS C:\> Send-LogsToS3 -InputFile $archive -Bucket "my-logs" `
+    -AccessKey $env:AWS_KEY -SecretKey $env:AWS_SECRET -Region "us-east-1"
+        </dev:code>
+        <dev:remarks>
+          <maml:para>Uploads using explicit AWS access and secret keys from environment variables.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 3: Get upload result with PassThru</maml:title>
+        <dev:code>
+PS C:\> $result = $archive | Send-LogsToS3 -Bucket "my-logs" -PassThru
+PS C:\> $result | Format-List
+
+S3Uri           : s3://my-logs/logs/2025/10/archive.zip
+ETag            : "abc123def456"
+ContentLength   : 5242880
+UploadDurationSeconds : 3.2
+        </dev:code>
+        <dev:remarks>
+          <maml:para>Captures upload result details for logging or verification.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 4: Complete pipeline with grouping and S3 upload</maml:title>
+        <dev:code>
+PS C:\> Get-LogFiles -Path "C:\logs" -OlderThan 7 |
+    Group-LogFilesByDate |
+    Compress-Logs -ArchivePath "C:\temp" -AppName "dailylogs" |
+    Send-LogsToS3 -Bucket "archive-bucket" -KeyPrefix "logs/{YEAR}/{MONTH}/" `
+        -StorageClass INTELLIGENT_TIERING -Region "us-west-2"
+        </dev:code>
+        <dev:remarks>
+          <maml:para>Complete workflow: find old logs, group by date, compress per date, and upload to S3 with cost-optimized storage class.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <maml:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Compress-Logs</maml:linkText>
+      </maml:navigationLink>
+      <maml:navigationLink>
+      <maml:linkText>Get-LogFiles</maml:linkText>
+    </maml:navigationLink>
+  </maml:relatedLinks>
+</command:command>
+
+  <!-- Test-S3Backup Cmdlet -->
+  <command:command>
+    <command:details>
+      <command:name>Test-S3Backup</command:name>
+      <command:verb>Test</command:verb>
+      <command:noun>S3Backup</command:noun>
+      <maml:description>
+        <maml:para>Checks whether a specific S3 object exists and returns its metadata.</maml:para>
+      </maml:description>
+    </command:details>
+    <maml:description>
+      <maml:para>The Test-S3Backup cmdlet verifies that a backup object exists in an Amazon S3 bucket. It resolves any tokens in the key (such as {SERVER}, {YEAR}, {MONTH}, {DAY}), fetches metadata, and returns an S3BackupInfo object describing the backup (size, ETag, timestamp, etc.). Use this cmdlet before compressing or uploading new logs to confirm whether a previous archive already exists.</maml:para>
+    </maml:description>
+    <command:syntax>
+      <command:syntaxItem>
+        <maml:name>Test-S3Backup</maml:name>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="False" position="0">
+          <maml:name>Bucket</maml:name>
+          <maml:description>
+            <maml:para>S3 bucket that contains the backup object.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="False" position="1">
+          <maml:name>Key</maml:name>
+          <maml:description>
+            <maml:para>S3 key of the backup object. Supports {SERVER}, {YEAR}, {MONTH}, {DAY} tokens.</maml:para>
+          </maml:description>
+          <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+          <maml:name>ProfileName</maml:name>
+          <maml:description>
+            <maml:para>AWS profile name (from ~/.aws/credentials) to use for authentication.</maml:para>
+          </maml:description>
+          <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+          <maml:name>Region</maml:name>
+          <maml:description>
+            <maml:para>AWS region (e.g., us-east-1). Defaults to the profile or environment setting when omitted.</maml:para>
+          </maml:description>
+          <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+          <maml:name>AccessKey</maml:name>
+          <maml:description>
+            <maml:para>AWS access key ID. Provide with SecretKey for explicit credentials; otherwise use profile/role auth.</maml:para>
+          </maml:description>
+          <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+        <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+          <maml:name>SecretKey</maml:name>
+          <maml:description>
+            <maml:para>AWS secret access key. Required when AccessKey is specified.</maml:para>
+          </maml:description>
+          <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+        </command:parameter>
+      </command:syntaxItem>
+    </command:syntax>
+    <command:parameters>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="False" position="0">
+        <maml:name>Bucket</maml:name>
+        <maml:description>
+          <maml:para>S3 bucket that holds the backup object.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="true" variableLength="false" globbing="false" pipelineInput="False" position="1">
+        <maml:name>Key</maml:name>
+        <maml:description>
+          <maml:para>S3 key for the backup object. Tokens ({SERVER}, {YEAR}, {MONTH}, {DAY}) are replaced before lookup.</maml:para>
+        </maml:description>
+        <command:parameterValue required="true" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+        <maml:name>ProfileName</maml:name>
+        <maml:description>
+          <maml:para>Named AWS profile. If omitted, uses the default profile or IAM role credentials.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+        <maml:name>Region</maml:name>
+        <maml:description>
+          <maml:para>AWS region to target (e.g., us-west-2). Optional when the profile already specifies a region.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+        <maml:name>AccessKey</maml:name>
+        <maml:description>
+          <maml:para>AWS access key ID for explicit credentials. Use with SecretKey.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+      <command:parameter required="false" variableLength="false" globbing="false" pipelineInput="False">
+        <maml:name>SecretKey</maml:name>
+        <maml:description>
+          <maml:para>AWS secret access key. Required if AccessKey is provided.</maml:para>
+        </maml:description>
+        <command:parameterValue required="false" variableLength="false">String</command:parameterValue>
+      </command:parameter>
+    </command:parameters>
+    <command:inputTypes>
+      <command:inputType>
+        <dev:type>
+          <maml:name>System.String</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>Accepts string inputs for bucket and key when used in a hashtable or splatted invocation.</maml:para>
+        </maml:description>
+      </command:inputType>
+    </command:inputTypes>
+    <command:returnValues>
+      <command:returnValue>
+        <dev:type>
+          <maml:name>logManager.Common.S3BackupInfo</maml:name>
+        </dev:type>
+        <maml:description>
+          <maml:para>Returns an S3BackupInfo object describing the backup (Exists, S3Uri, size, ETag, LastModified, SourceMd5).</maml:para>
+        </maml:description>
+      </command:returnValue>
+    </command:returnValues>
+    <command:examples>
+      <command:example>
+        <maml:title>Example 1: Check for today's backup using tokens</maml:title>
+        <dev:code>
+PS C:\> Test-S3Backup -Bucket "logs-archive" -Key "PRIME/{YEAR}/{MONTH}/{DAY}/APP-logs.zip"
+        </dev:code>
+        <dev:remarks>
+          <maml:para>Resolves tokens to today's date and verifies whether the backup exists. Returns metadata if found.</maml:para>
+        </dev:remarks>
+      </command:example>
+      <command:example>
+        <maml:title>Example 2: Check using explicit credentials</maml:title>
+        <dev:code>
+PS C:\> Test-S3Backup -Bucket "logs" -Key "backups/app.zip" `
+    -AccessKey $env:AWS_ACCESS_KEY_ID -SecretKey $env:AWS_SECRET_ACCESS_KEY -Region "us-east-1"
+        </dev:code>
+        <dev:remarks>
+          <maml:para>Uses explicit access key/secret to verify the backup in a specified region.</maml:para>
+        </dev:remarks>
+      </command:example>
+    </command:examples>
+    <maml:relatedLinks>
+      <maml:navigationLink>
+        <maml:linkText>Send-LogsToS3</maml:linkText>
+      </maml:navigationLink>
+      <maml:navigationLink>
+        <maml:linkText>Compress-Logs</maml:linkText>
+      </maml:navigationLink>
+    </maml:relatedLinks>
+  </command:command>
+</helpItems>

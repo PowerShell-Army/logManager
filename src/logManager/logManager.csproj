@@ -1,0 +1,52 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <AssemblyName>logManager</AssemblyName>
+    <RootNamespace>logManager</RootNamespace>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.PowerShell.SDK" Version="7.4.6" />
+    <PackageReference Include="PowerShellStandard.Library" Version="5.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="logManager.psd1">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="en-US/logManager-help.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="en-US/logManager.dll-Help.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <Target Name="TrimSatelliteAssemblies" AfterTargets="Build;Publish">
+    <ItemGroup>
+      <SatelliteDirectories Include="$(OutDir)cs\" />
+      <SatelliteDirectories Include="$(OutDir)de\" />
+      <SatelliteDirectories Include="$(OutDir)es\" />
+      <SatelliteDirectories Include="$(OutDir)fr\" />
+      <SatelliteDirectories Include="$(OutDir)it\" />
+      <SatelliteDirectories Include="$(OutDir)ja\" />
+      <SatelliteDirectories Include="$(OutDir)ko\" />
+      <SatelliteDirectories Include="$(OutDir)pl\" />
+      <SatelliteDirectories Include="$(OutDir)pt-BR\" />
+      <SatelliteDirectories Include="$(OutDir)ru\" />
+      <SatelliteDirectories Include="$(OutDir)tr\" />
+      <SatelliteDirectories Include="$(OutDir)zh-Hans\" />
+      <SatelliteDirectories Include="$(OutDir)zh-Hant\" />
+      <SatelliteDirectories Include="$(OutDir)ref\" />
+      <SatelliteDirectories Include="$(OutDir)runtimes\" />
+    </ItemGroup>
+    <RemoveDir Directories="@(SatelliteDirectories)" Condition="@(SatelliteDirectories) != ''" />
+  </Target>
+
+</Project>

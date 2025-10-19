@@ -1,0 +1,36 @@
+# Build outputs
+bin/
+obj/
+
+# User-specific files
+*.user
+*.rsuser
+*.suo
+*.cache
+*.log
+
+# IDE / Editor files
+.vscode/
+.idea/
+*.code-workspace
+
+# Test output
+TestResults/
+
+# PowerShell module temporary artifacts
+src/logManager/bin/
+src/logManager/obj/
+
+# AWS / secrets / local env files
+*.aws
+*.secrets
+.env
+
+# Claude artifacts
+CLAUDE.md
+.claude/
+
+# Misc
+~$*
+.DS_Store
+Thumbs.db

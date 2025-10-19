@@ -1,0 +1,67 @@
+@startuml logManager-cmdlet-flow
+!theme plain
+skinparam backgroundColor white
+skinparam ArrowColor #1976D2
+skinparam ActivityBackgroundColor #90CAF9
+skinparam ActivityBorderColor #1565C0
+
+title logManager Cmdlet Data Flow
+
+' Entry Points
+node "Get-LogFiles" as GLF {
+  ' Retrieves files with age filtering
+}
+
+node "Get-LogFolders" as GLFo {
+  ' Retrieves folders with date validation
+}
+
+' Optional Grouping
+node "Group-LogFilesByDate" as GLFD {
+  ' Groups files by yyyyMMdd date
+}
+
+' Compression
+node "Compress-Logs" as CL {
+  ' Creates ZIP archives
+}
+
+' S3 Upload
+node "Send-LogsToS3" as SLS {
+  ' Uploads to AWS S3
+}
+
+' Utilities
+node "TokenConverter" as TC {
+  ' Token expansion utility
+}
+
+node "SevenZipHelper" as SZH {
+  ' 7z compression wrapper
+}
+
+node "AwsS3Helper" as ASH {
+  ' AWS CLI wrapper
+}
+
+' Pipeline flows - solid arrows
+GLF --> GLFD: FileInfo[]
+GLF --> CL: FileInfo[]
+GLFo --> CL: DirectoryInfo[]
+GLFD --> CL: DateGroup[]
+CL --> SLS: FileInfo (archive)
+
+' Utility calls - dashed arrows
+GLF -.-> TC: uses
+GLFo -.-> TC: uses
+CL -.-> TC: uses
+CL -.-> SZH: uses
+SLS -.-> TC: uses
+SLS -.-> ASH: uses
+
+' Layout hints
+GLF -[hidden]- GLFo
+TC -[hidden]- SZH
+SZH -[hidden]- ASH
+
+@enduml
