@@ -1,6 +1,7 @@
 # Claude Code and BMAD directories
 .claude/
 .claude-trace/
+.specify/
 bmad/
 
 # User-specific files
